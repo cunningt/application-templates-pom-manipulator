@@ -61,12 +61,13 @@ public class MavenScriptTest
         assertTrue(dir.getAbsolutePath() + " does not exist", dir.exists());
         File[] matchingFiles = dir.listFiles(new FilenameFilter() {
             public boolean accept(File dir, String name) {
-                return name.endsWith("bak");
+                return name.endsWith("orig");
             }
-        });       
+        });
+
         for (int i = 0; i < matchingFiles.length; i++) {
             File replaced = matchingFiles[i];
-            File original = new File(replaced.toString().replace(".bak", ""));
+            File original = new File(replaced.toString().replace(".orig", ""));
             assertTrue(original.getAbsolutePath() + " does not exist", original.exists());
 
             // Check that the two files are different

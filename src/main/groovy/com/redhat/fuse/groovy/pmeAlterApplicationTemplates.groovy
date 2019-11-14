@@ -16,6 +16,9 @@
 package com.redhat.fuse.groovy
 
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
 import java.util.Properties
 
 import org.commonjava.maven.atlas.ident.ref.SimpleProjectRef
@@ -26,7 +29,6 @@ import org.commonjava.maven.ext.core.groovy.PMEBaseScript
 
 @InvocationPoint(invocationPoint = InvocationStage.FIRST)
 @PMEBaseScript BaseScript pme
-
 
 println "#### pmeAlterApplicationTemplates BEGIN"
 Properties properties = pme.getProject().getModel().getProperties()
@@ -46,6 +48,8 @@ while (enums.hasMoreElements()) {
             w << line.replaceAll(oldVersion, value) + System.getProperty("line.separator")
         }
     }
+    Files.copy(Paths.get(fileName+".bak"), Paths.get(fileName), StandardCopyOption.REPLACE_EXISTING)
+    boolean deleted = new File(fileName + ".bak").delete()
 }
 
 println "#### pmeAlterApplicationTemplates END"
